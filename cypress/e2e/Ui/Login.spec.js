@@ -1,37 +1,19 @@
 /// <reference types="cypress" />
 
-import CommonPage from '../../support/Common/CommonPage'
-import LoginPage from '../../support/Login/LoginPage'
+describe('US001 - Funcionalidade: Login', () => {
 
-describe('Validar login', { tags: '@demo' }, () => {
-    before(() => {
-        cy.navigate('/')
-        CommonPage.clickInMenuLogin()
-    })
+    beforeEach(() => {
+        cy.visit('login');
+    });
 
-    context('Dado que acesso a tela de login', () => {
-        it('Então devo visualizar a tela login', () => {
-            LoginPage.validateLogin()
-        })
-    })
+    it('Deve fazer login com sucesso', () => {
+        
+    });
 
-    context('Dado que realizo o login', () => {
-        it('Então insiro o CPF ou CNPJ', () => {
-            cy.fixture("user").then((data) => {
-                LoginPage.fillFieldUsername(data.cpf)
-            })
-        })
-
-        it('E clico no botão "Continuar"', () => {
-            LoginPage.clickInButtonContinueLogin()
-        })
-
-        it('E insiro a senha de acesso', () => {
-            LoginPage.fillFieldPassword(Cypress.env('password'))
-        })
-
-        it('E clico no botão "Entrar"', () => {
-            LoginPage.clickInButtonLogin()
-        })
-    })
-})
+    it('Validar mensagem de erro quando usuário for inválido', () => {
+        cy.get('[data-test="login-email"] > .MuiInputBase-root > .MuiInputBase-input').clear().type('email@email.com');
+        cy.get('[data-test="login-password"] > .MuiInputBase-root > .MuiInputBase-input').type('123456');
+        cy.get('[data-test="login-submit"]').click() ;
+        cy.get('[data-test="alert"]').should('contain', 'Credenciais inválidas');
+    });
+ });
